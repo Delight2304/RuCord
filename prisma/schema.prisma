@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ChannelType {
+  TEXT
+  VOICE
+}
+
+enum ServerRoleScope {
+  SYSTEM
+  CUSTOM
+}
+
+model User {
+  id           String      @id @default(uuid())
+  email        String      @unique
+  username     String      @unique
+  passwordHash String
+  avatarUrl    String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  ownedServers Server[]    @relation("ServerOwner")
+  memberships  ServerMember[]
+  messages     Message[]
+}
+
+model Server {
+  id          String         @id @default(uuid())
+  ownerId     String
+  name        String
+  iconUrl     String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  owner       User           @relation("ServerOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  channels    Channel[]
+  roles       Role[]
+  members     ServerMember[]
+
+  @@index([ownerId])
+}
+
+model ServerMember {
+  id        String      @id @default(uuid())
+  serverId  String
+  userId    String
+  nickname  String?
+  joinedAt  DateTime    @default(now())
+
+  server    Server      @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roles     MemberRole[]
+
+  @@unique([serverId, userId])
+  @@index([userId])
+}
+
+model Channel {
+  id          String      @id @default(uuid())
+  serverId     String
+  name         String
+  type         ChannelType
+  position     Int         @default(0)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  server       Server      @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  messages     Message[]
+
+  @@index([serverId])
+}
+
+model Message {
+  id          BigInt      @id @default(autoincrement())
+  channelId   String
+  authorId    String
+  content     String      @db.Text
+  createdAt   DateTime    @default(now())
+  editedAt    DateTime?
+
+  channel     Channel     @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  author      User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([channelId, createdAt(sort: Desc)])
+  @@index([authorId])
+}
+
+model Role {
+  id          String          @id @default(uuid())
+  serverId    String
+  name        String
+  permissions BigInt
+  position    Int             @default(0)
+  scope       ServerRoleScope @default(CUSTOM)
+  createdAt   DateTime        @default(now())
+
+  server      Server          @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  members     MemberRole[]
+
+  @@unique([serverId, name])
+  @@index([serverId, position])
+}
+
+model MemberRole {
+  memberId    String
+  roleId      String
+
+  member      ServerMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  role        Role         @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([memberId, roleId])
+}
