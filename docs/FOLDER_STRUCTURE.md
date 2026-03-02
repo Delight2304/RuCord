@@ -3,6 +3,7 @@
 ```text
 .
 ├── docs/
+│   ├── BUILD.md
 │   ├── CLIENT_COMPONENT_TREE.md
 │   ├── FOLDER_STRUCTURE.md
 │   ├── VOICE_CHAT_ARCHITECTURE.md
@@ -11,7 +12,15 @@
 │       └── voice-client.example.tsx
 ├── prisma/
 │   └── schema.prisma
+├── index.html
+├── package.json
+├── tsconfig.base.json
+├── tsconfig.api.json
+├── tsconfig.web.json
+├── vite.config.ts
 └── src/
+    ├── app.module.ts
+    ├── main.ts
     ├── common/
     │   ├── prisma.service.ts      # Prisma client lifecycle
     │   └── redis.service.ts       # Redis client + helper methods
@@ -28,6 +37,7 @@
     │   └── chat.gateway.ts        # WebSocket gateway: join/send/typing
     ├── client/
     │   ├── App.tsx
+    │   ├── main.tsx
     │   ├── components/
     │   │   ├── DiscordLayout.tsx
     │   │   └── MessageListVirtualized.tsx
@@ -50,7 +60,7 @@
 ## Design notes
 - `chat.gateway.ts` and `voice.gateway.ts` are transport-level WS adapters.
 - `src/client` contains Discord-like shell UI, real-time hook, and virtualized message rendering.
+- `src/main.ts` + `src/app.module.ts` provide Nest bootstrap for runtime build.
 - Business logic is isolated in services (`chat.service.ts`, `voice-signaling.service.ts`).
 - `permissions.service.ts` is shared and can evolve from MVP checks to full RBAC bitmask engine.
 - `message-cache.service.ts` encapsulates Redis list strategy for hot message history.
-- `docs/VOICE_CHAT_ARCHITECTURE.md` captures the WebRTC/SFU design rationale and signaling sequence.
