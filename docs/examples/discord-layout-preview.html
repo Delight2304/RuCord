@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discord Layout Preview</title>
+    <style>
+      :root { --bg-main:#313338; --bg-surface:#2b2d31; --bg-sidebar:#1e1f22; --bg-rail:#111214; --text-main:#dbdee1; --text-muted:#949ba4; --accent:#5865f2; }
+      *{box-sizing:border-box} body{margin:0;background:#18191c;color:var(--text-main);font-family:Inter,Arial,sans-serif}
+      .app-shell{display:grid;grid-template-columns:72px 260px minmax(520px,1fr) 250px;grid-template-rows:minmax(0,1fr) 64px;height:100vh}
+      .server-rail{grid-row:1/span 2;background:var(--bg-rail);display:flex;flex-direction:column;align-items:center;padding:14px 0;gap:10px}
+      .server-icon{width:50px;height:50px;border:0;border-radius:16px;background:#2a2d31;color:#fff}.server-icon.active{background:var(--accent)}
+      .channel-sidebar,.member-sidebar{background:var(--bg-sidebar)} .panel-header{height:48px;display:flex;align-items:center;padding:0 14px;font-weight:700;border-bottom:1px solid rgba(255,255,255,.05)}
+      .channel-list{padding:10px;display:flex;flex-direction:column;gap:4px}.channel-item{padding:8px 10px;border-radius:8px;color:var(--text-muted)}.channel-item.active{background:#404249;color:#fff}
+      .chat-panel{display:grid;grid-template-rows:48px 1fr 84px}.chat-header{display:flex;justify-content:space-between;align-items:center;padding:0 16px;background:var(--bg-surface)}
+      .message-list{padding:12px}.message-row{display:grid;grid-template-columns:40px 1fr;gap:10px;padding:8px;border-radius:8px}.message-avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#4c5058}
+      .chat-composer{padding:10px;background:var(--bg-surface)} .composer{height:42px;border-radius:8px;background:#1e1f22;padding:11px;color:var(--text-muted)}
+      .member-sidebar{padding:12px}.member-row{padding:6px 8px}.voice-bar{grid-column:2/5;background:#232428;display:flex;justify-content:space-between;align-items:center;padding:8px 14px}
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="server-rail"><button class="server-icon active">RC</button><button class="server-icon">FE</button><button class="server-icon">GG</button></aside>
+      <aside class="channel-sidebar"><header class="panel-header">Server Channels</header><div class="channel-list"><div class="channel-item active"># general</div><div class="channel-item"># architecture</div><div class="channel-item"># voice-lobby</div></div></aside>
+      <main class="chat-panel"><header class="chat-header"><span># general</span><span>Connected</span></header><section class="message-list"><div class="message-row"><div class="message-avatar">A</div><div><strong>alex</strong><div>Hey team 👋</div></div></div><div class="message-row"><div class="message-avatar">Y</div><div><strong>you</strong><div>UI layout is ready with virtualized list.</div></div></div></section><footer class="chat-composer"><div class="composer">Message #general</div></footer></main>
+      <aside class="member-sidebar"><header class="panel-header">Members</header><div class="member-row">● alex</div><div class="member-row">● olga</div><div class="member-row">● roman</div></aside>
+      <footer class="voice-bar"><div>you · Online</div><div>🎙️ 🎧 ⚙️</div></footer>
+    </div>
+  </body>
+</html>

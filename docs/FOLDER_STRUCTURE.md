@@ -3,9 +3,11 @@
 ```text
 .
 ├── docs/
+│   ├── CLIENT_COMPONENT_TREE.md
 │   ├── FOLDER_STRUCTURE.md
 │   ├── VOICE_CHAT_ARCHITECTURE.md
 │   └── examples/
+│       ├── discord-layout-preview.html
 │       └── voice-client.example.tsx
 ├── prisma/
 │   └── schema.prisma
@@ -24,6 +26,18 @@
     │   ├── message-cache.service.ts # Redis cache for last 50 messages
     │   ├── chat.service.ts        # Message persistence + read-through cache
     │   └── chat.gateway.ts        # WebSocket gateway: join/send/typing
+    ├── client/
+    │   ├── App.tsx
+    │   ├── components/
+    │   │   ├── DiscordLayout.tsx
+    │   │   └── MessageListVirtualized.tsx
+    │   ├── hooks/
+    │   │   ├── useVirtualMessages.ts
+    │   │   └── useWebSocket.ts
+    │   ├── styles/
+    │   │   └── discord.css
+    │   └── types/
+    │       └── chat.ts
     └── voice/
         ├── dto/
         │   └── voice-events.dto.ts      # DTO validation for voice signaling
@@ -35,6 +49,7 @@
 
 ## Design notes
 - `chat.gateway.ts` and `voice.gateway.ts` are transport-level WS adapters.
+- `src/client` contains Discord-like shell UI, real-time hook, and virtualized message rendering.
 - Business logic is isolated in services (`chat.service.ts`, `voice-signaling.service.ts`).
 - `permissions.service.ts` is shared and can evolve from MVP checks to full RBAC bitmask engine.
 - `message-cache.service.ts` encapsulates Redis list strategy for hot message history.
