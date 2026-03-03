@@ -2,12 +2,11 @@
   "name": "rucord",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev:web": "vite",
     "build:web": "vite build",
     "preview:web": "vite preview --port 4173",
-    "build:api": "tsc -p tsconfig.api.json && node scripts/postbuild-api.cjs",
+    "build:api": "tsc -p tsconfig.api.json",
     "start:api": "node dist-api/main.js",
     "build": "npm run build:api && npm run build:web"
   },

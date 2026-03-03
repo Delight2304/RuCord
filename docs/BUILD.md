@@ -39,3 +39,5 @@ npm run start:api
 - API uses NestJS WebSocket gateways under `/chat` and `/voice` namespaces.
 - Frontend entrypoint is `src/client/main.tsx` and `index.html`.
 - If package installation is blocked by network/security policy, builds cannot be executed until registry access is available.
+
+- API is compiled as CommonJS (`tsconfig.api.json`), so `node dist-api/main.js` must run under default Node CJS mode.
