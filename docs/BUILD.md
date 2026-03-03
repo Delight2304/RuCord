@@ -41,3 +41,5 @@ npm run start:api
 - If package installation is blocked by network/security policy, builds cannot be executed until registry access is available.
 
 - API is compiled as CommonJS (`tsconfig.api.json`), so `node dist-api/main.js` must run under default Node CJS mode.
+
+- API bootstrap (`NestFactory.create`) requires an HTTP platform driver (`@nestjs/platform-express`).
